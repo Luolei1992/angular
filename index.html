@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <title>音乐</title>
+   <style>
+      .music {
+         width: 480px;
+         min-height: 400px;
+         border:1px solid #666;
+         margin: 50px auto;
+      }
+      .nav {
+         height: 40px;
+         width: 480px;
+         line-height: 40px;
+         background-color: #312F2F;
+         display: flex;
+      }
+      .nav a {
+         text-align: center;
+         text-decoration: none;
+         color: #fff;
+         display: inline-block;
+         flex: 1;
+      }
+      .nav a:hover {
+         background-color: #5F5959;
+      }
+      li {
+         height: 30px;
+         line-height: 30px;
+      }
+      li:hover {
+         background-color: #eee;
+      }
+   </style>
+</head>
+<body>
+   <div class="music" ng-app="Music">
+      <div class="nav">
+         <a href="#/1">流行</a>
+         <a href="#/2">华语</a>
+         <a href="#/3">欧美</a>
+         <a href="#/4">日韩</a>
+      </div>
+      <ol>
+      <div ng-view></div>
+         
+      </ol>
+   </div>
+   <script src="./libs/angular.min.js"></script>
+   <script src="./libs/angular-route.js"></script>
+   <script>
+
+            var Music = angular.module('Music',['ngRoute']);
+            Music.config(['$routeProvider',function($routeProvider){
+               $routeProvider.when('/:type',{
+                  templateUrl:'./template/temp.html',
+                  controller:'ctr'
+               })
+               // .when('2',{
+               // })
+               // .when('3',{
+               // })
+               .otherwise({
+                  redirectTo:"/1"
+               })
+            }])
+            Music.controller('ctr',['$scope','$http','$routeParams',function($scope,$http,$routeParams){
+               // var as = document.querySelectorAll('.nav a');
+               var id = $routeParams.type;
+               // for(var i = 0;i<as.length;i++){
+                  // var s= as[i];
+                  // s.index = i;
+                  // alert(1)
+                  // s.onmouseenter = function(){
+                  // var id = this.index + 1;
+                     // console.log(this);
+                     // console.log(this.index);
+                     $http({
+                        url:'list.php',
+                        method:'get',
+                        params:{type:id}
+                     }).success(function(data){
+                        // console.log(data);
+                        $scope.lists = data;
+                     })
+                  // }
+               // }
+            }])
+   </script>
+</body>
+</html>
